@@ -36,14 +36,12 @@ function EditProject({command}) {
                 response =  await ServiceAPI.post(`/projects/create`, JSON.stringify(object));
             else
                 response =  await ServiceAPI.put(`/projects/update/${id}`, JSON.stringify(object));
-            console.error("disc  -------------------")
-            console.log(response?.data);
             if(command ===  "New")
                 window.location.href = "/";
             else
                 window.location.href = window.location.href;
         } catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
     async function addUser(event, path, del){
@@ -72,10 +70,6 @@ function EditProject({command}) {
             object = {user};
         }
         try {
-            const response = await ServiceAPI.post(`/projects/${path}/${id}`, JSON.stringify(object));
-            console.error("disc  -------------------")
-            console.log(response?.data);
-
             const res = await ServiceAPI.post(`/projects/${id}/get`, JSON.stringify({user: userCredentials.user}));
             setCurrentProject(res?.data);
             window.location.href = window.location.href;

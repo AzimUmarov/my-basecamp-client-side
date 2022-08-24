@@ -11,12 +11,13 @@ import {Link as LinkRoute} from "react-router-dom";
 import ServiceAPI from "../../../API/ServiceAPI";
 import {useContext, useState} from "react";
 import UserCredentialsContext from "../../../context/Credentials/UserCredentialsContext";
+import {CircularProgress} from "@mui/material";
 const LOGIN_URL = "/login";
 
 export default function Login() {
-    const { setUserCredentials, userCredentials} = useContext(UserCredentialsContext);
+    const { setUserCredentials} = useContext(UserCredentialsContext);
     const [errorMessage, setErrorMessage] = useState("");
-
+    const [loading, setLoading] = useState(false);
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -25,14 +26,17 @@ export default function Login() {
             password: data.get("password")
         };
         try {
+            setLoading(true);
+            setErrorMessage("");
             const response = await ServiceAPI.post(LOGIN_URL, JSON.stringify(user));
             console.log(response.data);
             const token = response?.data?.token;
             const validUser = response?.data?.existingUser;
             setUserCredentials({token: token, user: validUser});
+            setLoading(false);
             ServiceAPI.defaults.headers.common['Authorization'] = token;
-            console.log(userCredentials);
         } catch (err) {
+            setLoading(false);
             if (!err?.response)
                 setErrorMessage('Login Failed, Try again later');
             else
@@ -69,9 +73,9 @@ export default function Login() {
                 >
                     BASECAMP
                 </Typography>
-                <Typography component="h1" variant="h5" sx={{ml: -1.5}}>
+                {loading ?  <CircularProgress /> : <Typography component="h1" variant="h5" sx={{ml: -1.5}}>
                     Sign In
-                </Typography>
+                </Typography>}
                 <h4 className={errorMessage ? "text-warning bg-secondary p-2 mb-0 mt-2 w-100 text-center border" : "d-none"} aria-live="assertive">{errorMessage}</h4>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
@@ -83,6 +87,7 @@ export default function Login() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                onChange={()    => setErrorMessage("")}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -94,6 +99,7 @@ export default function Login() {
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
+                                onChange={()    => setErrorMessage("")}
                             />
                         </Grid>
                     </Grid>

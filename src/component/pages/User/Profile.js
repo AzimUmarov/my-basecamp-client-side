@@ -29,12 +29,9 @@ function Profile({logout}) {
             token: userCredentials.token,
             user
         }
-        console.log("onject----")
-        console.log(object);
         setUserCredentials(object);
         try {
             const response = await ServiceAPI.put(`/user/edit/${userCredentials?.user._id}`, JSON.stringify(user));
-            console.log(response?.data)
             // window.location.href = "/";
         } catch (err) {
             console.log(err);

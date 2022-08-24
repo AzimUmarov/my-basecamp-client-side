@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import ServiceAPI from "../../API/ServiceAPI";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -14,14 +13,7 @@ function Attachments({project_id}) {
 
     const {data} = useFetchProjects(`/project/${project_id}/attachment`);
     const attachments = data?.data;
-    console.log("------------------------------------------------------------------")
-    console.log("------------------------------------------------------------------")
-    console.log("------------------------------------------------------------------")
-    console.log("------------------------------------------------------------------")
-    console.log("------------------------------------------------------------------")
-    console.log("------------------------------------------------------------------")
-    console.log("------------------------------------------------------------------")
-    console.log(attachments);
+
     // function getBase64(file) {
     //         const reader = new FileReader();
     //         reader.readAsDataURL(file);

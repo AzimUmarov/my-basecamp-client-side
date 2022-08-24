@@ -16,6 +16,7 @@ const SIGNUP_URL = "/register";
 export default function SignUp() {
     const { setUserCredentials} = useContext(UserCredentialsContext);
     const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -29,14 +30,17 @@ export default function SignUp() {
         data.set("lastName", " ");
         data.set("firstName", " ");
 
-        console.log(user);
         try {
+            setLoading(true);
+            setErrorMessage("");
             const response = await ServiceAPI.post(SIGNUP_URL, JSON.stringify(user));
             const token = response?.data?.token;
             const validUser = response?.data?.user;
             ServiceAPI.defaults.headers.common['Authorization'] = token;
+            setLoading(false);
             setUserCredentials({token: token, user: validUser});
         } catch (err) {
+            setLoading(false);
             if (!err?.response)
                 setErrorMessage('Login Failed, Try again later');
             else
@@ -87,6 +91,7 @@ export default function SignUp() {
                                     fullWidth
                                     id="firstName"
                                     label="First Name"
+                                    onChange={()    => setErrorMessage("")}
                                     autoFocus
                                 />
                             </Grid>
@@ -98,6 +103,7 @@ export default function SignUp() {
                                     label="Last Name"
                                     name="lastName"
                                     autoComplete="family-name"
+                                    onChange={()    => setErrorMessage("")}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -108,6 +114,7 @@ export default function SignUp() {
                                     label="Email Address"
                                     name="email"
                                     autoComplete="email"
+                                    onChange={()    => setErrorMessage("")}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -119,6 +126,7 @@ export default function SignUp() {
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
+                                    onChange={()    => setErrorMessage("")}
                                 />
                             </Grid>
                         </Grid>

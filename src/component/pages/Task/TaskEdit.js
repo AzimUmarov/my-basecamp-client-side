@@ -3,27 +3,22 @@ import useFetchProjects from "../../../hooks/FetchProjects";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import {useNavigate, useParams} from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import ServiceAPI from "../../../API/ServiceAPI";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
 
 function Tasks(props) {
     const {id} = useParams();
 
     const {data} = useFetchProjects(`/tasks/${id}/subtasks`);
-    const navigate = useNavigate()
     const subTasks = data?.data;
     async function handleAction(e, command, _id){
         e.preventDefault();
         if(command === "delete"){
             try{
                 const response = await ServiceAPI.delete(`subtasks/${_id}/delete`);
-                console.log(response?.data);
                 window.location.href = window.location.href
             }
             catch(e){
@@ -52,10 +47,10 @@ function Tasks(props) {
             }
             try {
                 const response = await ServiceAPI.put(`/tasks/update/${id}`, JSON.stringify(object));
-                console.log(response?.data);
                 window.location.href = window.location.href
             } catch (err) {
-                console.error(err);            }
+                console.error(err);
+            }
         }
     }
     console.log(subTasks);

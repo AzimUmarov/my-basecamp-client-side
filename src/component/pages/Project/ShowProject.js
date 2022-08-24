@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import { useNavigate, useParams} from "react-router-dom";
 import UserCredentialsContext from "../../../context/Credentials/UserCredentialsContext";
 import Typography from "@mui/material/Typography";
@@ -26,7 +26,7 @@ function ShowProject(props) {
     let { id } = useParams();
     let {userCredentials, currentProject, creatorOfCurrentProject, projects} = useContext(UserCredentialsContext);
     const navigate = useNavigate();
-
+    const [loading, setLoading] = useState(false);
     if(!Object.values((currentProject)))
         currentProject = projects.length && projects?.filter(item => item?._id === id)[0];
 
@@ -41,6 +41,7 @@ function ShowProject(props) {
             user: userCredentials.user
         };
         try {
+            setLoading(true);
             const response = await ServiceAPI.post(what || `/projects/${currentProject?._id}/discussion/create`, JSON.stringify(object));
             console.log(response?.data);
             if(what)
@@ -48,6 +49,7 @@ function ShowProject(props) {
             else
                 window.location.href = window.location.href;
         } catch (err) {
+            setLoading(false);
             console.error(err)
         }
     };

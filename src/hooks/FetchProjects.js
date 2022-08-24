@@ -4,15 +4,14 @@ import UserCredentialsContext from "../context/Credentials/UserCredentialsContex
 
 
 export default function useFetch(url, update){
-    console.log(url);
     const [data,setData] = useState(null)
     const [error,setError] = useState(null)
     const [loading,setLoading] = useState(false)
     const {userCredentials} = useContext(UserCredentialsContext);
+
     useEffect(() => {
         (
             async function(){
-                console.log("-------------------------------\n---------------------------fetching: " + url);
                 try{
                     setLoading(true);
                     let response;
@@ -25,10 +24,8 @@ export default function useFetch(url, update){
                                 },
                             }
                         );
-                    console.log(response.data);
                     setData(response);
                 }catch(err){
-                    console.log(err)
                     setError(err);
                 }finally{
                     setLoading(false)

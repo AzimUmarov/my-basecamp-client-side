@@ -6,7 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import {CircularProgress, useTheme} from "@mui/material";
+import {Skeleton, useTheme} from "@mui/material";
 import {useContext, useState} from "react";
 import UserCredentialsContext from "../../../context/Credentials/UserCredentialsContext";
 import useFetchProjects from "../../../hooks/FetchProjects";
@@ -15,12 +15,11 @@ import Stack from '@mui/material/Stack';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ServiceAPI from "../../../API/ServiceAPI";
-import Box from "@mui/material/Box";
 
 export default function ProjectCard({project, visibility }) {
     const {userCredentials, setCurrentProject, setCreatorOfCurrentProject} = useContext(UserCredentialsContext);
     const theme = useTheme();
-    const {data,loading,error} = useFetchProjects(`/user/${project?.creator_id}`);
+    const {data,loading} = useFetchProjects(`/user/${project?.creator_id}`);
     const navigate = useNavigate();
 
     async function handler(e, what){
@@ -42,9 +41,10 @@ export default function ProjectCard({project, visibility }) {
     }
     if(loading)
         return (
-            <Box sx={{  maxWidth: 400, minWidth: 400}}>
-                <CircularProgress sx={{m: 15}} />
-            </Box>
+            <Card sx={{ maxWidth: 400, minWidth: 400, m: 5}}>
+                <Skeleton animation="wave" variant="rectangular" width={400} height={200} />
+                <Skeleton variant="text" width={400} animation="wave"/>
+            </Card>
         )
 
     if(visibility === "all" || (visibility === "shared") && project.creator_id !== userCredentials?.user?._id

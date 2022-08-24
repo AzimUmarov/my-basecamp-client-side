@@ -8,7 +8,7 @@ export function Home({visibility}){
     const {data,error} = useFetchProjects('/projects/all');
     console.log("data:")
     console.log(data?.data);
-    const {setProjects, projects, userCredentials} = useContext(UserCredentialsContext);
+    const {setProjects} = useContext(UserCredentialsContext);
 
     if(error)
         alert(error);
