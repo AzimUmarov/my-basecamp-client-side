@@ -10,6 +10,7 @@ import FilterHdrIcon from '@mui/icons-material/FilterHdr';
 import ServiceAPI from "../../../API/ServiceAPI";
 import {useContext, useState} from "react";
 import UserCredentialsContext from "../../../context/Credentials/UserCredentialsContext";
+import {CircularProgress} from "@mui/material";
 import {Link as LinkRoute} from "react-router-dom";
 const SIGNUP_URL = "/register";
 
@@ -25,10 +26,6 @@ export default function SignUp() {
             password: data.get("password"),
             name: data.get("lastName") + " " + data.get("firstName")
         };
-        data.set("email", " ");
-        data.set("password", " ");
-        data.set("lastName", " ");
-        data.set("firstName", " ");
 
         try {
             setLoading(true);
@@ -77,9 +74,9 @@ export default function SignUp() {
                         >
                         BASECAMP
                         </Typography>
-                    <Typography component="h1" variant="h5" sx={{ml: -1.5}}>
+                    {loading ?  <CircularProgress /> :  <Typography component="h1" variant="h5" sx={{ml: -1.5}}>
                         Sign up
-                    </Typography>
+                    </Typography> }
                     <h4 className={errorMessage ? "text-warning bg-secondary p-2 mb-0 mt-2 w-100 text-center border" : "d-none"} aria-live="assertive">{errorMessage}</h4>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
